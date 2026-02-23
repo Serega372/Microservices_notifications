@@ -1,0 +1,74 @@
+http:
+  routers:
+    auth-router:
+      rule: "PathPrefix(`/auth`)"
+      entryPoints:
+        - web
+      service: auth-service
+      middlewares:
+        - auth-rewrite
+
+    admin-auth-router:
+      rule: "PathPrefix(`/admin/auth`)"
+      entryPoints:
+        - web
+      service: auth-service
+      middlewares:
+        - admin-auth-rewrite
+
+    notifications-router:
+      rule: "PathPrefix(`/notifications`)"
+      entryPoints:
+        - web
+      service: notifications-gateway
+      middlewares:
+        - rate-limit
+        - jwt-verify
+        - notifications-rewrite
+
+  middlewares:
+    admin-auth-rewrite:
+      replacepathregex:
+        regex: "^/admin/auth(.*)"
+        replacement: "/api/admin$1"
+    
+    auth-rewrite:
+      replacepathregex:
+        regex: "^/auth(.*)"
+        replacement: "/api/users$1"
+
+    notifications-rewrite:
+      replacepathregex:
+        regex: "^/notifications(.*)"
+        replacement: "/api/notifications$1"
+
+    rate-limit:
+      ratelimit:
+        average: 1000
+        burst: 500
+        period: 1m
+
+    jwt-verify:
+      forwardauth:
+        address: "http://192.168.2.113:6000/api/users/verify"
+        trustForwardHeader: true
+
+  services:
+    auth-service:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.113:6000"
+        healthCheck:
+          path: "/health"
+          interval: "5s"
+          timeout: "3s"
+
+    notifications-gateway:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.2.111:7000"
+          - url: "http://192.168.2.112:7000"
+        healthCheck:
+          path: "/health"
+          interval: "5s"
+          timeout: "3s"

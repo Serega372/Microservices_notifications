@@ -1,0 +1,29 @@
+﻿services:
+  auth-service:
+    build:
+      context: ./auth-service/AuthService
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "6000:8080"
+    environment:
+      DatabaseConnections__ConnectionString: "Host=192.168.2.113;Database=[database_name];Username=postgres;Password=postgres;Port=6050;"
+      DatabaseConnections__DatabaseName: "auth_db"
+      DOTNET_ENVIRONMENT: "Production"
+    restart: unless-stopped
+  
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    command:
+      - "--entrypoints.web.address=:5000"
+      - "--providers.file.directory=/etc/traefik/dynamic"
+      - "--providers.file.watch=true"
+      - "--log.level=DEBUG"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - auth-service
+    volumes:
+      - ./api-gateway/dynamic:/etc/traefik/dynamic
+    restart: unless-stopped

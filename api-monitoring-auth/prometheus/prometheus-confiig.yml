@@ -1,0 +1,48 @@
+global:
+  scrape_interval: 3s
+  evaluation_interval: 3s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: notifications-gateway-1
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["192.168.2.111:7000"]
+
+  - job_name: sms-service-1
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["192.168.2.111:9000"]
+
+  - job_name: push-service-1
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["192.168.2.111:10000"]
+
+  - job_name: email-service-1
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["192.168.2.111:8000"]
+
+  - job_name: notifications-gateway-2
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["192.168.2.112:7000"]
+
+  - job_name: sms-service-2
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["192.168.2.112:9000"]
+
+  - job_name: push-service-2
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["192.168.2.112:10000"]
+
+  - job_name: email-service-2
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["192.168.2.112:8000"]

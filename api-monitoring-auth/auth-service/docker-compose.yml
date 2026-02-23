@@ -1,0 +1,29 @@
+services:
+  auth-service:
+    build:
+      context: ./AuthService
+      dockerfile: Dockerfile
+    container_name: auth-service
+    depends_on:
+      - auth-db
+    ports:
+      - "6000:8080"
+    environment:
+      DatabaseConnections__ConnectionString: "Host=auth-db;Database=[database_name];Username=postgres;Password=postgres;Port=5432;"
+      DatabaseConnections__DatabaseName: "auth_db"
+      DOTNET_ENVIRONMENT: "Production"
+      
+  auth-db:
+    image: postgres:17
+    container_name: auth-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: auth_db
+    ports:
+      - "6050:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:

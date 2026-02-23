@@ -1,0 +1,19 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.pdb
+.vs/
+
+# NuGet
+packages/
+*.nupkg
+
+# Docker
+*.dockerignore
+
+# Other
+.DS_Store
+Thumbs.db

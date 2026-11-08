@@ -57,6 +57,7 @@ public sealed class AccessTokenService : IAccessTokenService
         return (new TokenVerifyResponse
         {
             UserId = foundUserByAccessToken.Id,
+            AccessToken = foundAccessToken.Token,
             ExpirationDate = foundAccessToken.ExpirationDate,
             Permissions = permissionsByRole
         }, null);

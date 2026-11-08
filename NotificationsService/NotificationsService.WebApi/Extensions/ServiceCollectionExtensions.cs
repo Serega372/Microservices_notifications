@@ -2,7 +2,6 @@ using Microsoft.Extensions.Options;
 using NotificationsService.Application.Configs;
 using NotificationsService.Application.Interfaces;
 using NotificationsService.Application.Services;
-using NotificationsService.Core.Interfaces;
 using NotificationsService.Infrastructure.Kafka.Producer;
 using NotificationsService.Infrastructure.Repositories;
 using Npgsql;
@@ -15,6 +14,7 @@ public static class ServiceCollectionExtensions
     {
         services.Configure<KafkaProducerConfig>(configuration.GetSection("Kafka"));
         services.Configure<DatabaseConfig>(configuration.GetSection("DatabaseConnections"));
+        services.Configure<ExternalServicesConfig>(configuration.GetSection("ExternalServices"));
     }
 
     public static void AddKafkaProducer<TMessage>(this IServiceCollection services)

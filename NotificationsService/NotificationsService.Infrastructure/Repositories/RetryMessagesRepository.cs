@@ -1,7 +1,7 @@
 using Dapper;
 using Microsoft.Extensions.Logging;
+using NotificationsService.Application.Interfaces;
 using NotificationsService.Core.Entities;
-using NotificationsService.Core.Interfaces;
 using Npgsql;
 using System.Data;
 

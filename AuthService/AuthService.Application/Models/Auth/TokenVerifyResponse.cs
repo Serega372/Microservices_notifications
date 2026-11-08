@@ -9,6 +9,9 @@ public sealed record TokenVerifyResponse : ARecord
     public required long UserId { get; init; }
 
     [Required]
+    public required Guid AccessToken { get; init; }
+
+    [Required]
     public required DateTime ExpirationDate { get; init; }
 
     public IEnumerable<string> Permissions { get; init; } = [];

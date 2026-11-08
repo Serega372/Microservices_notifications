@@ -1,7 +1,7 @@
 using NotificationsService.Core.Entities;
 using System.Data;
 
-namespace NotificationsService.Core.Interfaces;
+namespace NotificationsService.Application.Interfaces;
 
 public interface INotificationsRepository
 {

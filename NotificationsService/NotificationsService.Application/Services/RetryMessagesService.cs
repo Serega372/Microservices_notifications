@@ -5,7 +5,6 @@ using NotificationsService.Application.Interfaces;
 using NotificationsService.Application.Models;
 using NotificationsService.Core.Consts;
 using NotificationsService.Core.Entities;
-using NotificationsService.Core.Interfaces;
 using System.Text.Json;
 
 namespace NotificationsService.Application.Services;

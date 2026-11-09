@@ -7,15 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Confluent.Kafka" Version="2.15.0" />
-      <PackageReference Include="Dapper" Version="2.1.79" />
-      <PackageReference Include="FluentMigrator.Runner" Version="8.0.1" />
-      <PackageReference Include="FluentMigrator.Runner.Core" Version="8.0.1" />
-      <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.3.11" />
-      <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.11" />
-      <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.10" />
-      <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.10" />
-      <PackageReference Include="Npgsql" Version="10.0.3" />
+      <PackageReference Include="Confluent.Kafka" Version="2.16.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.3.13" />
+      <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.13" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.14" />
+      <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.14" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.14" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
     </ItemGroup>
 
     <ItemGroup>

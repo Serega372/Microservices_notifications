@@ -1,7 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NotificationsService.Application.Configs;
 using NotificationsService.Application.Interfaces;
 using NotificationsService.Application.Services;
+using NotificationsService.Infrastructure;
 using NotificationsService.Infrastructure.Kafka.Producer;
 using NotificationsService.Infrastructure.Repositories;
 using Npgsql;
@@ -39,5 +41,12 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<INotificationsRepository, NotificationsRepository>();
         services.AddScoped<IRetryMessagesRepository, RetryMessagesRepository>();
+    }
+
+    public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext<DatabaseContext>(options => options
+            .UseNpgsql(configuration.GetConnectionString("NotificationDatabase"))
+            .UseSnakeCaseNamingConvention());
     }
 }

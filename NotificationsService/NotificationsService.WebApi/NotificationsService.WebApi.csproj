@@ -8,6 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="EFCore.NamingConventions" Version="10.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\NotificationsService.Application\NotificationsService.Application.csproj" />
       <ProjectReference Include="..\NotificationsService.Infrastructure\NotificationsService.Infrastructure.csproj" />
     </ItemGroup>

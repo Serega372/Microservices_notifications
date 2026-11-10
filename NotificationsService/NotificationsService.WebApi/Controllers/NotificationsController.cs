@@ -30,36 +30,37 @@ public class NotificationsController : ControllerBase
         [FromBody] SendMessageRequest request,
         CancellationToken cancellationToken = default)
     {
-        try
-        {
-            if (request.Id.HasValue)
-            {
-                await _notificationsService.ProcessRetryMessageAsync(request, cancellationToken);
-            }
+        //try
+        //{
+        //    if (request.Id.HasValue)
+        //    {
+        //        await _notificationsService.ProcessRetryMessageAsync(request, cancellationToken);
+        //    }
 
-            var userId = long.Parse(HttpContext.User.FindFirstValue("Id")
-                ?? throw new Exception("User not found"));
-            var messageWithUserIdRequest = new SendMessageWithUserIdRequest
-            {
-                Type = request.Type,
-                Payload = request.Payload,
-                UserId = userId
-            };
+        //    var userId = long.Parse(HttpContext.User.FindFirstValue("Id")
+        //        ?? throw new Exception("User not found"));
+        //    var messageWithUserIdRequest = new SendMessageWithUserIdRequest
+        //    {
+        //        Type = request.Type,
+        //        Payload = request.Payload,
+        //        UserId = userId
+        //    };
 
-            await _notificationsService.ProcessMessageAsync(messageWithUserIdRequest, cancellationToken);
+        //    await _notificationsService.ProcessMessageAsync(messageWithUserIdRequest, cancellationToken);
 
-            return Ok();
-        }
-        catch (OperationCanceledException)
-        {
-            var message = $"Operation was cancelled in {DateTime.UtcNow}";
-            _logger.LogInformation(message);
-            return BadRequest(message);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Exception occured while send message: {ex.Message}");
-            return BadRequest($"An exception occured in {GetType().Name}");
-        }
+        //    return Ok();
+        //}
+        //catch (OperationCanceledException)
+        //{
+        //    var message = $"Operation was cancelled in {DateTime.UtcNow}";
+        //    _logger.LogInformation(message);
+        //    return BadRequest(message);
+        //}
+        //catch (Exception ex)
+        //{
+        //    _logger.LogError(ex, $"Exception occured while send message: {ex.Message}");
+        //    return BadRequest($"An exception occured in {GetType().Name}");
+        //}
+        return Ok();
     }
 }

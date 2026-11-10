@@ -1,12 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using NotificationsService.Application.Configs;
 using NotificationsService.Application.Interfaces;
-using NotificationsService.Application.Services;
 using NotificationsService.Infrastructure;
+using NotificationsService.Infrastructure.Caching;
+using NotificationsService.Infrastructure.ExternalServices;
 using NotificationsService.Infrastructure.Kafka.Producer;
-using NotificationsService.Infrastructure.Repositories;
-using Npgsql;
 
 namespace NotificationsService.WebApi.Extensions;
 
@@ -15,7 +13,7 @@ public static class ServiceCollectionExtensions
     public static void AddConfigurations(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<KafkaProducerConfig>(configuration.GetSection("Kafka"));
-        services.Configure<DatabaseConfig>(configuration.GetSection("DatabaseConnections"));
+        services.Configure<DatabaseConfig>(configuration.GetSection("ConnectionStrings"));
         services.Configure<ExternalServicesConfig>(configuration.GetSection("ExternalServices"));
     }
 
@@ -26,21 +24,12 @@ public static class ServiceCollectionExtensions
 
     public static void AddServices(this IServiceCollection services)
     {
-        services.AddScoped<INotificationsService, Application.Services.NotificationsService>();
-        services.AddHostedService<RetryMessagesService>();
     }
 
     public static void AddRepositories(this IServiceCollection services)
     {
-        services.AddSingleton(sp =>
-        {
-            var cfg = sp.GetRequiredService<IOptions<DatabaseConfig>>().Value;
-            var builder = new NpgsqlDataSourceBuilder(cfg.CreateConnectionString());
-            return builder.Build();
-        });
-
-        services.AddScoped<INotificationsRepository, NotificationsRepository>();
-        services.AddScoped<IRetryMessagesRepository, RetryMessagesRepository>();
+        services.AddSingleton<IMemoryCacheStorage, MemoryCacheStorage>();
+        services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<DatabaseContext>());
     }
 
     public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
@@ -48,5 +37,15 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<DatabaseContext>(options => options
             .UseNpgsql(configuration.GetConnectionString("NotificationDatabase"))
             .UseSnakeCaseNamingConvention());
+    }
+
+    public static void AddHttpClients(this IServiceCollection services, IConfiguration configuration)
+    {
+        var externalServicesConfig = configuration.GetSection("ExternalServices").Get<ExternalServicesConfig>();
+        services.AddHttpClient<IAuthServiceStorage, AuthServiceStorage>(client =>
+        {
+            var baseUrl = externalServicesConfig.AuthServiceOptions.BaseUrl;
+            client.BaseAddress = new Uri(baseUrl.EndsWith("/") ? baseUrl : $"{baseUrl}/");
+        });
     }
 }

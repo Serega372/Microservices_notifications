@@ -31,7 +31,7 @@ public sealed class AuthServiceStorage : IAuthServiceStorage
 
     public async Task<TokenVerifyResponse?> VerifyAsync(Guid accessToken, CancellationToken cancellationToken = default)
     {
-        var verifyUri = $"{_authServiceOptions.BaseUrl}{_authServiceOptions.VerifyPath}";
+        var verifyUri = $"{_authServiceOptions.VerifyPath}";
         var requestContent = new StringContent(JsonSerializer.Serialize(new { AccessToken = accessToken }), Encoding.UTF8, "application/json");
 
         var responseMessage = await _httpClient.PostAsync(verifyUri, requestContent, cancellationToken);

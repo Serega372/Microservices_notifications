@@ -77,7 +77,7 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity>
         return await query.ToListAsync(cancellationToken);
     }
 
-    public async Task<TEntity> Add(TEntity entity)
+    public TEntity Add(TEntity entity)
     {
         var result = DbSet.Add(entity);
         return result.Entity;

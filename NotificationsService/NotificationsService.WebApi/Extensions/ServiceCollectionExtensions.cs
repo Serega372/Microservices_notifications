@@ -28,6 +28,7 @@ public static class ServiceCollectionExtensions
 
     public static void AddRepositories(this IServiceCollection services)
     {
+        services.AddMemoryCache();
         services.AddSingleton<IMemoryCacheStorage, MemoryCacheStorage>();
         services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<DatabaseContext>());
     }
